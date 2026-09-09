@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+class Offer extends Model
+{
+    protected $fillable = [
+        'property_id',
+        'supplier_id',
+        'external_id',
+        'check_in',
+        'check_out',
+        'max_guests',
+        'price',
+        'currency',
+        'available_units',
+        'expires_at'
+    ];
+
+    protected $casts = [
+        'check_in' => 'date',
+        'check_out' => 'date',
+        'expires_at' => 'datetime',
+        'price' => 'decimal:2',
+    ];
+
+    public function property(): BelongsTo
+    {
+        return $this->belongsTo(Property::class);
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function reservation(): HasOne
+    {
+        return $this->hasOne(Reservation::class);
+    }
+}
