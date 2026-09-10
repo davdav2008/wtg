@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\ImportStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Import extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'supplier_id',
         'external_import_id',
@@ -21,6 +24,7 @@ class Import extends Model
     protected $casts = [
         'sent_at' => 'datetime',
         'completed_at' => 'datetime',
+        'status' => ImportStatus::class,
     ];
 
     protected $attributes = [
