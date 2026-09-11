@@ -4,24 +4,17 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 class ImportRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
@@ -55,11 +48,14 @@ class ImportRequest extends FormRequest
         return [
             function (Validator $validator) {
                 foreach ($this->input('offers', []) as $index => $offer) {
-                    if (!isset($offer['check_in'], $offer['check_out'])) {
+                    $checkIn = Arr::get($offer, 'check_in');
+                    $checkOut = Arr::get($offer, 'check_out');
+
+                    if (!$checkIn || !$checkOut) {
                         continue;
                     }
 
-                    if (strtotime($offer['check_out']) <= strtotime($offer['check_in'])) {
+                    if (strtotime($checkOut) <= strtotime($checkIn)) {
                         $validator->errors()->add(
                             "offers.{$index}.check_out",
                             "Check-out date must be after check-in date."

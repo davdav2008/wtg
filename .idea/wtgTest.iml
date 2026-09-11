@@ -146,6 +146,7 @@
       <excludeFolder url="file://$MODULE_DIR$/wtgTest/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/wtgTest/storage/app" />
       <excludeFolder url="file://$MODULE_DIR$/wtgTest/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/wtgTest/vendor/laravel/sanctum" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

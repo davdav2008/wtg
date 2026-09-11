@@ -12,7 +12,7 @@ class SupplierSeeder extends Seeder
      */
     public function run(): void
     {
-        Supplier::firstOrCreate(['name' => 'supplier-a']);
-        Supplier::firstOrCreate(['name' => 'supplier-b']);
+        Supplier::query()->firstOrCreate(['name' => 'supplier-a']);
+        Supplier::query()->firstOrCreate(['name' => 'supplier-b']);
     }
 }

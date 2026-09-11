@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('max_guests');
             $table->decimal('price', 10, 2);
             $table->string('currency', 3);
-            $table->integer('available_units')->default(0);
+            $table->unsignedInteger('available_units')->default(0);
             $table->timestamp('expires_at');
             $table->timestamps();
 

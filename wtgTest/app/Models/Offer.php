@@ -41,8 +41,8 @@ class Offer extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function reservation(): HasOne
+    public function reservations(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasOne(Reservation::class);
+        return $this->hasMany(Reservation::class);
     }
 }
