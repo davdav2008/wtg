@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Actions\Property\SearchPropertiesAction;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\PropertyResource;
-use Illuminate\Http\Request;
 
 class PropertyController extends Controller
 {
@@ -13,6 +12,10 @@ class PropertyController extends Controller
     {
         $properties = $action->execute($request->validated());
 
-        return PropertyResource::collection($properties);
+        return PropertyResource::collection($properties)->additional([
+            'next' => $properties->nextPageUrl(),
+            'prev' => $properties->previousPageUrl(),
+            'per_page' => $properties->perPage(),
+        ]);
     }
 }

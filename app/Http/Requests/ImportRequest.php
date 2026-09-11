@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
@@ -51,14 +50,14 @@ class ImportRequest extends FormRequest
                     $checkIn = Arr::get($offer, 'check_in');
                     $checkOut = Arr::get($offer, 'check_out');
 
-                    if (!$checkIn || !$checkOut) {
+                    if (! $checkIn || ! $checkOut) {
                         continue;
                     }
 
                     if (strtotime($checkOut) <= strtotime($checkIn)) {
                         $validator->errors()->add(
                             "offers.{$index}.check_out",
-                            "Check-out date must be after check-in date."
+                            'Check-out date must be after check-in date.'
                         );
                     }
                 }

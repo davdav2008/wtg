@@ -27,14 +27,14 @@ class TestDataSeeder extends Seeder
         Offer::query()->updateOrCreate(
             ['supplier_id' => $supplierA->id, 'external_id' => 'offer-a-10001'],
             [
-                'property_id'     => $bcn->id,
-                'check_in'        => '2026-10-10',
-                'check_out'       => '2026-10-15',
-                'max_guests'      => 4,
-                'price'           => 50000,
-                'currency'        => 'EUR',
+                'property_id' => $bcn->id,
+                'check_in' => '2026-10-10',
+                'check_out' => '2026-10-15',
+                'max_guests' => 4,
+                'price' => 50000,
+                'currency' => 'EUR',
                 'available_units' => 2,
-                'expires_at'      => now()->addDays(30),
+                'expires_at' => now()->addDays(30),
             ]
         );
 
@@ -42,14 +42,14 @@ class TestDataSeeder extends Seeder
         Offer::query()->updateOrCreate(
             ['supplier_id' => $supplierA->id, 'external_id' => 'offer-a-10002'],
             [
-                'property_id'     => $bcn->id,
-                'check_in'        => '2026-10-10',
-                'check_out'       => '2026-10-15',
-                'max_guests'      => 4,
-                'price'           => 72500,
-                'currency'        => 'EUR',
+                'property_id' => $bcn->id,
+                'check_in' => '2026-10-10',
+                'check_out' => '2026-10-15',
+                'max_guests' => 4,
+                'price' => 72500,
+                'currency' => 'EUR',
                 'available_units' => 2,
-                'expires_at'      => now()->addDays(30),
+                'expires_at' => now()->addDays(30),
             ]
         );
 
@@ -57,14 +57,14 @@ class TestDataSeeder extends Seeder
         Offer::query()->updateOrCreate(
             ['supplier_id' => $supplierA->id, 'external_id' => 'offer-a-20001'],
             [
-                'property_id'     => $madrid->id,
-                'check_in'        => '2026-10-10',
-                'check_out'       => '2026-10-15',
-                'max_guests'      => 4,
-                'price'           => 60000,
-                'currency'        => 'EUR',
+                'property_id' => $madrid->id,
+                'check_in' => '2026-10-10',
+                'check_out' => '2026-10-15',
+                'max_guests' => 4,
+                'price' => 60000,
+                'currency' => 'EUR',
                 'available_units' => 1,
-                'expires_at'      => now()->addDays(30),
+                'expires_at' => now()->addDays(30),
             ]
         );
     }

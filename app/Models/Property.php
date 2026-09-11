@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Property extends Model
 {
-
     use HasFactory;
 
     protected $fillable = [
         'code',
         'name',
-        'city'
+        'city',
     ];
 
     public function offers(): HasMany

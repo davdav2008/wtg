@@ -15,12 +15,12 @@ class PropertyResource extends JsonResource
             'name' => $this->name,
             'city' => $this->city,
             'best_offer' => [
-                'id'              => $this->offer_id,
-                'supplier'        => $this->supplier_name,
-                'price'           => $this->price,
-                'currency'        => $this->currency,
+                'id' => $this->offer_id,
+                'supplier' => $this->supplier_name,
+                'price' => $this->price,
+                'currency' => $this->currency,
                 'available_units' => $this->available_units,
-                'expires_at'      => Carbon::parse($this->expires_at)->toIso8601String(),
+                'expires_at' => Carbon::parse($this->expires_at)->toIso8601String(),
             ],
         ];
     }

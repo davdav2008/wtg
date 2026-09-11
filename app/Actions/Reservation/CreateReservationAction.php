@@ -23,10 +23,10 @@ class CreateReservationAction
             }
 
             return Reservation::query()->create([
-                'offer_id'         => $offer->id,
+                'offer_id' => $offer->id,
                 'client_reference' => Arr::get($payload, 'client_reference'),
-                'customer_name'    => Arr::get($payload, 'customer_name'),
-                'customer_email'   => Arr::get($payload, 'customer_email'),
+                'customer_name' => Arr::get($payload, 'customer_name'),
+                'customer_email' => Arr::get($payload, 'customer_email'),
             ]);
         });
     }

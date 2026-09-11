@@ -20,7 +20,7 @@ class ReservationFactory extends Factory
     {
         return [
             'offer_id' => Offer::factory(),
-            'client_reference' => 'order-' . fake()->unique()->uuid(),
+            'client_reference' => 'order-'.fake()->unique()->uuid(),
             'customer_name' => fake()->name(),
             'customer_email' => fake()->unique()->safeEmail(),
         ];

@@ -17,18 +17,19 @@ class OfferFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
+     *
      * @throws DateMalformedStringException
      */
     public function definition(): array
     {
         $checkIn = fake()->dateTimeBetween('+1 week', '+1 month');
         $checkOut = clone $checkIn;
-        $checkOut->modify('+' . fake()->numberBetween(1, 7) . ' days');
+        $checkOut->modify('+'.fake()->numberBetween(1, 7).' days');
 
         return [
             'property_id' => Property::factory(),
             'supplier_id' => Supplier::factory(),
-            'external_id' => 'offer-' . fake()->unique()->numberBetween(10000, 99999),
+            'external_id' => 'offer-'.fake()->unique()->numberBetween(10000, 99999),
             'check_in' => $checkIn->format('Y-m-d'),
             'check_out' => $checkOut->format('Y-m-d'),
             'max_guests' => fake()->numberBetween(1, 8),

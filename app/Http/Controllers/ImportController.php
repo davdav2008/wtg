@@ -6,7 +6,6 @@ use App\Actions\Import\CreateImportAction;
 use App\Http\Requests\ImportRequest;
 use App\Http\Resources\ImportResource;
 use App\Models\Import;
-use Illuminate\Http\Request;
 
 class ImportController extends Controller
 {

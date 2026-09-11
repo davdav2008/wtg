@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use App\ImportStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Import extends Model
 {
     use HasFactory;
@@ -18,7 +19,7 @@ class Import extends Model
         'total_offers',
         'processed_offers',
         'error',
-        'completed_at'
+        'completed_at',
     ];
 
     protected $casts = [

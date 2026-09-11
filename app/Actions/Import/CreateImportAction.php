@@ -15,13 +15,13 @@ class CreateImportAction
 
         $import = Import::query()->firstOrCreate(
             [
-                'supplier_id'        => $supplier->id,
+                'supplier_id' => $supplier->id,
                 'external_import_id' => Arr::get($payload, 'external_import_id'),
             ],
             [
-                'sent_at'          => Arr::get($payload, 'sent_at'),
-                'status'           => 'pending',
-                'total_offers'     => count(Arr::get($payload, 'offers')),
+                'sent_at' => Arr::get($payload, 'sent_at'),
+                'status' => 'pending',
+                'total_offers' => count(Arr::get($payload, 'offers')),
                 'processed_offers' => 0,
             ]
         );

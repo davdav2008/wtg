@@ -42,7 +42,7 @@ class ImportTest extends TestCase
                     'currency' => 'EUR',
                     'available_units' => 2,
                     'expires_at' => '2026-09-10T23:59:59Z',
-                ]
+                ],
             ],
         ];
 
@@ -50,7 +50,7 @@ class ImportTest extends TestCase
 
         $response->assertStatus(202)
             ->assertJsonStructure([
-                'data' => ['id', 'status']
+                'data' => ['id', 'status'],
             ]);
 
         $this->assertDatabaseHas('imports', [
@@ -72,23 +72,62 @@ class ImportTest extends TestCase
             'offers' => [
                 [
                     'external_id' => 'o1',
-                    'property' => ['code'=>'c','name'=>'n','city'=>'c'],
-                    'check_in'=>'2026-10-10',
-                    'check_out'=>'2026-10-15',
-                    'max_guests'=>1,
-                    'price'=>100,
-                    'currency'=>'EUR',
-                    'available_units'=>1,
-                    'expires_at'=>'2026-12-01T00:00:00Z'
-                ]
+                    'property' => ['code' => 'c', 'name' => 'n', 'city' => 'c'],
+                    'check_in' => '2026-10-10',
+                    'check_out' => '2026-10-15',
+                    'max_guests' => 1,
+                    'price' => 100,
+                    'currency' => 'EUR',
+                    'available_units' => 1,
+                    'expires_at' => '2026-12-01T00:00:00Z',
+                ],
             ],
         ];
 
         $this->postJson('/api/imports', $payload)->assertStatus(202);
         $this->postJson('/api/imports', $payload)->assertStatus(202);
 
-        $this->assertEquals(1, Import::count());
+        $this->assertEquals(1, Import::query()->count());
         Queue::assertPushed(ProcessImportJob::class, 1);
+    }
+
+    public function test_cannot_submit_duplicate_external_import_id_for_same_supplier()
+    {
+        $supplier = Supplier::query()->where('name', 'supplier-a')->first();
+        Import::query()->create([
+            'supplier_id' => $supplier->id,
+            'external_import_id' => 'import-001',
+            'sent_at' => now(),
+            'status' => 'completed',
+        ]);
+
+        $payload = [
+            'supplier' => 'supplier-a',
+            'external_import_id' => 'import-001',
+            'sent_at' => '2026-09-01T10:00:00Z',
+            'offers' => [
+                [
+                    'external_id' => 'offer-a-1',
+                    'property' => [
+                        'code' => 'BCN-001',
+                        'name' => 'Apartment 1',
+                        'city' => 'Barcelona',
+                    ],
+                    'check_in' => '2026-10-10',
+                    'check_out' => '2026-10-15',
+                    'max_guests' => 4,
+                    'price' => 72500,
+                    'currency' => 'EUR',
+                    'available_units' => 2,
+                    'expires_at' => '2026-09-10T23:59:59Z',
+                ],
+            ],
+        ];
+
+        $response = $this->postJson('/api/imports', $payload);
+
+        $response->assertStatus(202);
+        $this->assertEquals(1, Import::query()->count());
     }
 
     public function test_can_get_import_status()
@@ -131,7 +170,7 @@ class ImportTest extends TestCase
                     'currency' => 'EUR',
                     'available_units' => 2,
                     'expires_at' => '2026-09-10T23:59:59Z',
-                ]
+                ],
             ],
         ];
 
@@ -148,5 +187,59 @@ class ImportTest extends TestCase
 
         $this->assertDatabaseHas('properties', ['code' => 'BCN-001']);
         $this->assertDatabaseHas('offers', ['external_id' => 'offer-a-1', 'price' => 72500]);
+    }
+
+    public function test_import_updates_existing_offer()
+    {
+        $supplier = Supplier::query()->where('name', 'supplier-a')->first();
+        $property = \App\Models\Property::query()->create(['code' => 'BCN-001', 'name' => 'P1', 'city' => 'BCN']);
+
+        \App\Models\Offer::query()->create([
+            'property_id' => $property->id,
+            'supplier_id' => $supplier->id,
+            'external_id' => 'offer-a-1',
+            'check_in' => '2026-10-10',
+            'check_out' => '2026-10-15',
+            'max_guests' => 4,
+            'price' => 50000,
+            'currency' => 'EUR',
+            'available_units' => 1,
+            'expires_at' => '2026-09-10T23:59:59Z',
+        ]);
+
+        $payload = [
+            'supplier' => 'supplier-a',
+            'external_import_id' => 'import-003',
+            'sent_at' => '2026-09-01T10:00:00Z',
+            'offers' => [
+                [
+                    'external_id' => 'offer-a-1',
+                    'property' => [
+                        'code' => 'BCN-001',
+                        'name' => 'Apartment 1 Updated',
+                        'city' => 'Barcelona',
+                    ],
+                    'check_in' => '2026-10-10',
+                    'check_out' => '2026-10-15',
+                    'max_guests' => 4,
+                    'price' => 72500,
+                    'currency' => 'EUR',
+                    'available_units' => 2,
+                    'expires_at' => '2026-09-10T23:59:59Z',
+                ],
+            ],
+        ];
+
+        $response = $this->postJson('/api/imports', $payload);
+        $importId = $response->json('data.id');
+
+        (new ProcessImportJob($importId, $payload['offers']))->handle();
+
+        $this->assertDatabaseHas('offers', [
+            'external_id' => 'offer-a-1',
+            'price' => 72500,
+            'available_units' => 2,
+        ]);
+        $this->assertEquals(1, \App\Models\Offer::query()->count());
     }
 }

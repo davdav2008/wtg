@@ -22,11 +22,11 @@ class PropertyFactory extends Factory
             'Madrid',
             'Paris',
             'London',
-            'Berlin'
+            'Berlin',
         ];
 
         return [
-            'code' => strtoupper(fake()->city()) . '-' . fake()->unique()->numberBetween(1, 9999),
+            'code' => strtoupper(fake()->city()).'-'.fake()->unique()->numberBetween(1, 9999),
             'name' => fake()->sentence(3),
             'city' => fake()->randomElement($cities),
         ];

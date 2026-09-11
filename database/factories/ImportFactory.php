@@ -20,7 +20,7 @@ class ImportFactory extends Factory
     {
         return [
             'supplier_id' => Supplier::factory(),
-            'external_import_id' => 'import-' . fake()->date() . '-' . fake()->numberBetween(1, 100),
+            'external_import_id' => 'import-'.fake()->date().'-'.fake()->numberBetween(1, 100),
             'sent_at' => fake()->dateTimeBetween('-1 week', 'now'),
             'status' => fake()->randomElement(['pending', 'processing', 'completed', 'failed']),
             'total_offers' => fake()->numberBetween(5, 100),

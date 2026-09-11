@@ -6,7 +6,6 @@ use App\Models\Offer;
 use App\Models\Property;
 use App\Models\Supplier;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class PropertyTest extends TestCase
@@ -79,6 +78,12 @@ class PropertyTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.best_offer.price', 80)
-            ->assertJsonPath('data.0.code', 'BCN-001');
+            ->assertJsonPath('data.0.code', 'BCN-001')
+            ->assertJsonStructure([
+                'data',
+                'next',
+                'prev',
+                'per_page',
+            ]);
     }
 }

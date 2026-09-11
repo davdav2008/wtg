@@ -8,14 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Reservation extends Model
 {
-
     use HasFactory;
 
     protected $fillable = [
         'offer_id',
         'client_reference',
         'customer_name',
-        'customer_email'
+        'customer_email',
     ];
 
     public function offer(): BelongsTo

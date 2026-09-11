@@ -27,7 +27,7 @@ class ProcessImportJob implements ShouldQueue
     {
         $import = Import::query()->find($this->importId);
 
-        if (!$import) {
+        if (! $import) {
             return;
         }
 
@@ -51,10 +51,10 @@ class ProcessImportJob implements ShouldQueue
         }
 
         $import->update([
-            'status'           => $processed > 0 ? 'completed' : 'failed',
+            'status' => $processed > 0 ? 'completed' : 'failed',
             'processed_offers' => $processed,
-            'completed_at'     => now(),
-            'error'            => $failures ? implode("\n", $failures) : null,
+            'completed_at' => now(),
+            'error' => $failures ? implode("\n", $failures) : null,
         ]);
     }
 
@@ -74,14 +74,14 @@ class ProcessImportJob implements ShouldQueue
         ]);
 
         $offer->fill([
-            'property_id'     => $property->id,
-            'check_in'        => Arr::get($data, 'check_in'),
-            'check_out'       => Arr::get($data, 'check_out'),
-            'max_guests'      => Arr::get($data, 'max_guests'),
-            'price'           => Arr::get($data, 'price'),
-            'currency'        => Arr::get($data, 'currency'),
+            'property_id' => $property->id,
+            'check_in' => Arr::get($data, 'check_in'),
+            'check_out' => Arr::get($data, 'check_out'),
+            'max_guests' => Arr::get($data, 'max_guests'),
+            'price' => Arr::get($data, 'price'),
+            'currency' => Arr::get($data, 'currency'),
             'available_units' => Arr::get($data, 'available_units'),
-            'expires_at'      => Arr::get($data, 'expires_at'),
+            'expires_at' => Arr::get($data, 'expires_at'),
         ]);
 
         $offer->save();
@@ -90,8 +90,8 @@ class ProcessImportJob implements ShouldQueue
     public function failed(\Throwable $e): void
     {
         Import::query()->where('id', $this->importId)->update([
-            'status'       => 'failed',
-            'error'        => $e->getMessage(),
+            'status' => 'failed',
+            'error' => $e->getMessage(),
             'completed_at' => now(),
         ]);
     }
